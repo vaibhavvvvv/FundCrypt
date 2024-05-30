@@ -26,7 +26,6 @@ const Hero = ({titleData, createCampaign }) => {
   return (
     <div class="relative" >
       <span class="coverLine" ></span>
-      <img src='https://random.imagecdn.app/300/300' class="absolute inset-0 object-cover w-full h-full " alt="" />
       <div class="relative bg-opacity-75 backgroundMain" >
       <svg
         className="absolute inset-x-0 bottom-0 text-white"
@@ -63,7 +62,7 @@ const Hero = ({titleData, createCampaign }) => {
             </a>
           </div>
           <div className='w-full max-w-xl xl:px-8 xl:w-5/12' > 
-          <div className='bg-white rounded shadow-2xl p-7 sm:p-10' >
+          <div className='bg-white rounded shadow-2xl shadow-gray-600 p-7 sm:p-10' >
             <h3 class="bg-white rounded sm:text-center sm:mb-6 sm:text-2xl" >
               Campaign
             </h3>
@@ -82,7 +81,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Title'
                   required
                   type='text'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 border rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='firstName'
                   name='firstName'
                 >
@@ -103,7 +102,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Description'
                   required
                   type='text'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 border rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='lastName'
                   name='lastName'
                 >
@@ -124,7 +123,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Amount'
                   required
                   type='text'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 border rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='email'
                   name='email'
                 >
@@ -145,7 +144,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Date'
                   required
                   type='date'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 border rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='email'
                   name='email'
                 >
@@ -156,13 +155,13 @@ const Hero = ({titleData, createCampaign }) => {
                 <button
                   onClick={(e)=> createNewCampaign(e)}
                   type='submit'
-                  className=' inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200  rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700  focus:shadow-outline focus:outline-none newColor hover:bg-blue-200 '
+                  className=' inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide border text-white transition duration-200  rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700  focus:shadow-outline focus:outline-none newColor hover:bg-blue-200 '
                 >
                   Create Campaign
                 </button>
               </div>
 
-              <p className='text-xs text-gray-600 sm:text-sm ' >
+              <p className='text-xs text-gray-600 sm:text-sm text-center' >
                   Create your Campaign and raise funds.
               </p>
             </form>

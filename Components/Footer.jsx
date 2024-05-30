@@ -12,7 +12,7 @@ const Footer = () => {
         <div class="grid-1 grid gap-8 md:grid-cols-2 lg:grid-cols-4 " >
           <div class="" >
             <h6 class="mb-4 flex items-center justify-center font-semibold uppercase md:justify-start " >
-              Vaibhav Gadhave
+              FundCrypt
             </h6>
             <p>A Web3 crowdfunding marketplace is a decentralized platform where creators can raise funds for their projects directly from supporters using blockchain technology.</p>
           </div>

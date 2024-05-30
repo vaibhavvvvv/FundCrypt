@@ -21,7 +21,6 @@ export const CrowdFundingProvider = ({ children }) =>{
         const signer = provider.getSigner()
         const contract = fetchContract(signer)
 
-        console.log(currentAccount)
         try {
             const transaction = await contract.createCampaign(
                 currentAccount,
@@ -57,7 +56,6 @@ export const CrowdFundingProvider = ({ children }) =>{
             ),
             pId: i,
         }));
-        console.log("parsed : ",parsedCampaigns)
         return parsedCampaigns;
     }
         
@@ -75,7 +73,7 @@ export const CrowdFundingProvider = ({ children }) =>{
 
         const filteredCampaigns = allCampaigns.filter(
             (campaign) => 
-                campaign.owner ==='0x1F1e15634BaD10E1105A0CA9cbBA26E6f986fB28'
+                campaign.owner.toLowerCase() == accounts
         );
 
         const userData = filteredCampaigns.map((campaign, i)=>({
@@ -89,7 +87,6 @@ export const CrowdFundingProvider = ({ children }) =>{
             ),
             pId: i,
         }));
-        console.log("user: ", userData)
 
         return userData;
     };
@@ -122,11 +119,10 @@ export const CrowdFundingProvider = ({ children }) =>{
 
         for (let i =0; i < numberOfDonations; i++){
             parsedDonations.push({
-                donator: donations[0][1],
-                donations: ethers.utils.formatEther(donations[1][i].toString()),
+                donator: donations[0][i],
+                donation: ethers.utils.formatEther(donations[1][i].toString()),
             });
         }
-
         return parsedDonations;
     };
 

@@ -8,7 +8,7 @@ const NavBar = () => {
   const { currentAccount, connectWallet }  = useContext(CrowdFundingContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuList = ["White Paper", "Project", "Donations", "Members"];
+  const menuList = ["Github", "Profile"];
 
   return (
     <div class="backgroundMain" >
@@ -18,12 +18,12 @@ const NavBar = () => {
           <div class="flex items-center"  >
             <a href='/' aria-label='Company' title='Company' class="inline-flex items-center mr-8 ">
               <Logo color="text-white" />
-              <span class="ml-2 text-xl font-bold tracking-wide text-gray-100 uppercase ">Company</span>
+              <span class="ml-2 text-xl font-bold tracking-wide text-gray-100 uppercase ">FundCrypt</span>
             </a>
-            <ul className="flex items-center hidden space-x-8 lg:flex ">
+            <ul className="flex items-center space-x-8 lg:flex ">
               {menuList.map((el, i)=>(
                 <li key={i+1}>
-                  <a href='/' aria-label='Our Product' title='Our Product' className="font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400 " >
+                  <a href='https://github.com/vaibhavvvvv/FundCrypt' aria-label='Our Product' title='Our Product' className="font-medium tracking-wide text-gray-100 transition-colors duration-200 hover:text-teal-accent-400 " >
                     {el}
                   </a>
                 </li>
@@ -32,19 +32,29 @@ const NavBar = () => {
             
           </div>
           
-          {!currentAccount && (
+          {!currentAccount ? (
             <ul class="flex items-center hidden space-x-8 lg:flex" >
               <li>
                 <button onClick={()=>connectWallet()} 
-                  class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background "
-                  aria-label='Sign up'
+              class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background hover:border-purple-400 hover:border  "
+              aria-label='Sign up'
                   title='Sign up'
                 >
                   Connect Wallet
                 </button>
               </li>
             </ul>
-          )}
+          ):<ul class="flex items-center hidden space-x-8 lg:flex" >
+          <li>
+            <button 
+              class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background hover:border-purple-400 hover:border  "
+              aria-label='Current User'
+              title='Current User'
+            >
+              {currentAccount}
+            </button>
+          </li>
+        </ul> }
           
           <div class="lg:hidden z-40" > 
             <button 
@@ -62,7 +72,7 @@ const NavBar = () => {
                     <div>
                       <a href='/' aria-label='Company' title='Company' class="inline-flex  items-center ">
                         <Logo color="text-black" />
-                        <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase ">Company</span>
+                        <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase ">FundCrypt</span>
                       </a>
                     </div>
 
@@ -92,17 +102,37 @@ const NavBar = () => {
                       </a>
                     </li>
                   ))}
-                   <li>
-                    <a 
-                      href='/'
-                      onClick={()=>connectWallet()} 
-                      class=" inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background "
-                      aria-label='Sign up'
-                      title='Sign up'
-                    >
-                      Connect Wallet
-                    </a>
-                  </li>
+
+                  {!currentAccount ? (
+                        <ul class="flex items-center hidden space-x-8 lg:flex" >
+                          <li>
+                            <button onClick={()=>connectWallet()} 
+                              class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background "
+                              aria-label='Sign up'
+                              title='Sign up'
+                            >
+                              Connect Wallet
+                            </button>
+                          </li>
+                        </ul>
+                      ):<ul class="flex items-center  space-x-8 lg:flex" >
+                      <li>
+                        <a 
+                          class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background hover:border-purple-400 hover:border  "
+                          aria-label='Current User'
+                          title='Current User'
+                          style={{
+                            maxWidth: '320px', 
+                            whiteSpace: 'nowrap',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            fontSize:'12px'
+                          }}
+                        >
+                          {currentAccount}
+                        </a>
+                      </li>
+                    </ul> }
                   </ul>
                 </nav>
                 </div>

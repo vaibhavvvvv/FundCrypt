@@ -57,7 +57,7 @@ export const CrowdFundingProvider = ({ children }) =>{
             ),
             pId: i,
         }));
-        console.log(parsedCampaigns)
+        console.log("parsed : ",parsedCampaigns)
         return parsedCampaigns;
     }
         
@@ -75,20 +75,21 @@ export const CrowdFundingProvider = ({ children }) =>{
 
         const filteredCampaigns = allCampaigns.filter(
             (campaign) => 
-                campaign.owner ===  "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"
+                campaign.owner ==='0x1F1e15634BaD10E1105A0CA9cbBA26E6f986fB28'
         );
 
         const userData = filteredCampaigns.map((campaign, i)=>({
             owner: campaign.owner,
             title : campaign.title,
             description : campaign.description,
-            target : campaign.utils.formatEther(campaign.target.toString()),
+            target : ethers.utils.formatEther(campaign.target.toString()),
             deadline : campaign.deadline.toNumber(),
             amountCollected :ethers.utils.formatEther(
-                campaign.amountCollected.toString
+                campaign.amountCollected.toString()
             ),
             pId: i,
         }));
+        console.log("user: ", userData)
 
         return userData;
     };

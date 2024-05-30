@@ -12,8 +12,11 @@ const Hero = ({titleData, createCampaign }) => {
     e.preventDefault();
     try{
       const data = await createCampaign(campaign)
+      alert("Your Campaign is created")
+      window.location.reload();
     } catch(error) {
       console.log(error)
+      alert("Make sure you've connected your wallet", error )
     }
 
   };
@@ -61,7 +64,7 @@ const Hero = ({titleData, createCampaign }) => {
           </div>
           <div className='w-full max-w-xl xl:px-8 xl:w-5/12' > 
           <div className='bg-white rounded shadow-2xl p-7 sm:p-10' >
-            <h3 class="bg-white shadow rounded sm:text-center sm:mb-6 sm:text-2xl" >
+            <h3 class="bg-white rounded sm:text-center sm:mb-6 sm:text-2xl" >
               Campaign
             </h3>
             <form>
@@ -79,7 +82,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Title'
                   required
                   type='text'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline '
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='firstName'
                   name='firstName'
                 >
@@ -100,7 +103,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Description'
                   required
                   type='text'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline '
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='lastName'
                   name='lastName'
                 >
@@ -121,7 +124,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Amount'
                   required
                   type='text'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline '
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='email'
                   name='email'
                 >
@@ -133,7 +136,7 @@ const Hero = ({titleData, createCampaign }) => {
                   htmlFor='email'
                   className='inline-block mb-1 font-medium '
                 >
-                  Target Amount
+                  Deadline
                 </label>
                 <input 
                   onChange={(e)=> 
@@ -142,7 +145,7 @@ const Hero = ({titleData, createCampaign }) => {
                   placeholder='Date'
                   required
                   type='date'
-                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline '
+                  className='flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline hover:bg-gray-100'
                   id='email'
                   name='email'
                 >
@@ -153,7 +156,7 @@ const Hero = ({titleData, createCampaign }) => {
                 <button
                   onClick={(e)=> createNewCampaign(e)}
                   type='submit'
-                  className=' inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200  rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700  focus:shadow-outline focus:outline-none newColor  '
+                  className=' inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200  rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700  focus:shadow-outline focus:outline-none newColor hover:bg-blue-200 '
                 >
                   Create Campaign
                 </button>

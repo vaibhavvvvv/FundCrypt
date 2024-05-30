@@ -7,7 +7,7 @@ const index = () => {
     titleData,
     getCampaigns,
     createCampaign,
-    donateToCampaign,
+    donate,
     getUserCampaigns,
     getDonations,
   } = useContext(CrowdFundingContext);
@@ -24,6 +24,7 @@ const index = () => {
       const userData = await getUserCampaignsData
       setAllCampaign(allData)
       setUserCampaign(userData)
+      console.log("usercampaign: ", userData)
     }
   },[])
 
@@ -55,8 +56,8 @@ const index = () => {
         < PopUp  
           setOpenModal={setOpenModal}
           getDonations = {getDonations}
-          donate = {donateCampaign}
-          donateFunction = {donate}
+          donate={donateCampaign}
+          donateFunction={donate}
         />
       )}
     </>

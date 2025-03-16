@@ -1,27 +1,66 @@
-import React, {useState, useEffect, Children} from "react";
-import Wenb3Modal from "web3modal"
+import React, {useState, useEffect} from "react";
 import { ethers } from "ethers";
+import { WagmiConfig, createConfig } from "wagmi";
+import { ConnectKitProvider, getDefaultConfig, ConnectKitButton } from "connectkit";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 //INTERNAL IMPORT   
 import { CrowdFundingABI, CrowdFundingAddress } from "./constants";
 
 const fetchContract = (signerOrProvider) => new ethers.Contract(CrowdFundingAddress, CrowdFundingABI, signerOrProvider);
 
-export const CrowdFundingContext = React.createContext(null)
+// Create a client
+const queryClient = new QueryClient();
 
-export const CrowdFundingProvider = ({ children }) =>{
+// Polygon Amoy chain configuration
+const polygonAmoy = {
+  id: 80002,
+  name: 'Polygon Amoy',
+  network: 'polygon-amoy',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'MATIC',
+    symbol: 'MATIC',
+  },
+  rpcUrls: {
+    public: { http: ['https://rpc-amoy.polygon.technology/'] },
+    default: { http: ['https://rpc-amoy.polygon.technology/'] },
+  },
+  blockExplorers: {
+    default: { name: 'PolygonScan', url: 'https://amoy.polygonscan.com' },
+  },
+  testnet: true,
+};
+
+// Create Wagmi config with ConnectKit
+const config = createConfig(
+  getDefaultConfig({
+    appName: "FundCrypt",
+    walletConnectProjectId: "YOUR_PROJECT_ID", // Get from https://cloud.walletconnect.com
+    chains: [polygonAmoy],
+  }),
+);
+
+export const CrowdFundingContext = React.createContext(null);
+
+export const CrowdFundingProvider = ({ children }) => {
     const titleData = "crowd funding contract";
-    const [currentAccount, setCurrentAccount] =useState("");
+    const [currentAccount, setCurrentAccount] = useState("");
+    const [isConnected, setIsConnected] = useState(false);
     
     const createCampaign = async(campaign)=>{
         const {title, description, amount, deadline} = campaign
-        const web3modal = new Wenb3Modal()
-        const connection = await web3modal.connect()
-        const provider = new ethers.providers.Web3Provider(connection)
-        const signer = provider.getSigner()
-        const contract = fetchContract(signer)
+        
+        if (!isConnected || !currentAccount) {
+            console.log("Please connect wallet first");
+            return;
+        }
 
         try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = fetchContract(signer);
+
             const transaction = await contract.createCampaign(
                 currentAccount,
                 title,
@@ -36,11 +75,10 @@ export const CrowdFundingProvider = ({ children }) =>{
         } catch(error){
             console.log("contract call failure", error)
         }
-
     }    
 
     const getCampaigns = async() => {
-        const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/polygon_amoy");
+        const provider = new ethers.providers.JsonRpcProvider("https://rpc-amoy.polygon.technology/");
         const contract = fetchContract(provider)
 
         const campaigns =  await contract.getCampaigns();
@@ -56,12 +94,13 @@ export const CrowdFundingProvider = ({ children }) =>{
             ),
             pId: i,
         }));
+        console.log("parsedCampaigns", parsedCampaigns);
         return parsedCampaigns;
     }
         
 
     const getUserCampaigns = async() => {
-        const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/polygon_amoy");
+        const provider = new ethers.providers.JsonRpcProvider("https://rpc-amoy.polygon.technology/");
         const contract = fetchContract(provider);
 
         const allCampaigns = await contract.getCampaigns();
@@ -73,7 +112,7 @@ export const CrowdFundingProvider = ({ children }) =>{
 
         const filteredCampaigns = allCampaigns.filter(
             (campaign) => 
-                campaign.owner.toLowerCase() == accounts
+                campaign.owner.toLowerCase() == currentUser.toLowerCase()
         );
 
         const userData = filteredCampaigns.map((campaign, i)=>({
@@ -92,24 +131,31 @@ export const CrowdFundingProvider = ({ children }) =>{
     };
 
     const donate = async (pId, amount) => {
-        const web3modal = new Wenb3Modal();
-        const connection = await web3modal.connect();
-        const provider = new ethers.providers.Web3Provider(connection);
-        const signer = provider.getSigner()
-        const contract = fetchContract(signer);
+        if (!isConnected || !currentAccount) {
+            console.log("Please connect wallet first");
+            return;
+        }
 
-        const campaignData = await contract.donateToCampaign(pId, {
-            value : ethers.utils.parseEther(amount),
-        });
-            
-        await campaignData.wait();
-        location.reload();
+        try {
+            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const signer = provider.getSigner();
+            const contract = fetchContract(signer);
 
-        return campaignData;
+            const campaignData = await contract.donateToCampaign(pId, {
+                value : ethers.utils.parseEther(amount),
+            });
+                
+            await campaignData.wait();
+            location.reload();
+
+            return campaignData;
+        } catch (error) {
+            console.log("Error donating to campaign:", error);
+        }
     };
 
     const getDonations = async (pId) => {
-        const provider = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/polygon_amoy");
+        const provider = new ethers.providers.JsonRpcProvider("https://rpc-amoy.polygon.technology/");
         const contract = fetchContract(provider);
 
         const donations = await contract.getDonators(pId);
@@ -126,59 +172,71 @@ export const CrowdFundingProvider = ({ children }) =>{
         return parsedDonations;
     };
 
-
-    //Check if wallet is connected
+    // Check if wallet is connected
     const checkIfWalletConnected = async () => {
-        try{
-            if (!window.ethereum)
-                return setOpenError(true), setError("Install Metamask");
-
+        try {
+            if (!window.ethereum) return;
+            
             const accounts = await window.ethereum.request({
                 method: "eth_accounts",
             });
-
+            
             if (accounts.length) {
                 setCurrentAccount(accounts[0]);
+                setIsConnected(true);
             } else {
-                console.log("account not found")
+                setIsConnected(false);
+                setCurrentAccount("");
             }
-        }catch (error){
-            console.log("Something wrong while connecting to wallet.")
+        } catch (error) {
+            console.log("Something wrong while connecting to wallet:", error);
         }
     };
 
-    useEffect(()=>{
+    useEffect(() => {
         checkIfWalletConnected();
-    },[]);
-
-    //- connect wallet function
-    const connectWallet = async () => {
-        try {
-            if (!window.ethereum) return console.log("install metamask");
-            
-            const accounts = await window.ethereum.request({
-                method: "eth_requestAccounts",
+        
+        if (window.ethereum) {
+            window.ethereum.on('accountsChanged', (accounts) => {
+                if (accounts.length > 0) {
+                    setCurrentAccount(accounts[0]);
+                    setIsConnected(true);
+                } else {
+                    setCurrentAccount('');
+                    setIsConnected(false);
+                }
             });
-            setCurrentAccount(accounts[0]);
-        }catch (error) {
-            console.log("Error while connecting to wallet.");
         }
-    };
+        
+        return () => {
+            if (window.ethereum) {
+                window.ethereum.removeAllListeners('accountsChanged');
+            }
+        };
+    }, []);
 
     return (
-        <CrowdFundingContext.Provider
-            value = {{
-                titleData,
-                currentAccount,
-                createCampaign,
-                getCampaigns,
-                getUserCampaigns,
-                donate,
-                getDonations,
-                connectWallet,
-            }}
-        >
-            {children}
-        </CrowdFundingContext.Provider>
-    )
-}
+        <QueryClientProvider client={queryClient}>
+            <WagmiConfig config={config}>
+                <ConnectKitProvider>
+                    <CrowdFundingContext.Provider
+                        value={{
+                            titleData,
+                            currentAccount,
+                            isConnected,
+                            createCampaign,
+                            getCampaigns,
+                            getUserCampaigns,
+                            donate,
+                            getDonations,
+                            connectWallet: () => {}, // This will be handled by ConnectKitButton
+                            disconnectWallet: () => {}, // This will be handled by ConnectKitButton
+                        }}
+                    >
+                        {children}
+                    </CrowdFundingContext.Provider>
+                </ConnectKitProvider>
+            </WagmiConfig>
+        </QueryClientProvider>
+    );
+};

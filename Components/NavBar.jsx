@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react'
+import { ConnectKitButton } from "connectkit";
 
 //internal imports
 import { CrowdFundingContext } from '@/Context/CrowdFunding';
 import {Logo, Menu} from "../Components/index";
 
 const NavBar = () => {
+  // const {ConnectKitButton} = useContext(CrowdFundingContext);
   const { currentAccount, connectWallet }  = useContext(CrowdFundingContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -32,29 +34,9 @@ const NavBar = () => {
             
           </div>
           
-          {!currentAccount ? (
-            <ul class="flex items-center hidden space-x-8 lg:flex" >
-              <li>
-                <button onClick={()=>connectWallet()} 
-              class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background hover:border-purple-400 hover:border  "
-              aria-label='Sign up'
-                  title='Sign up'
-                >
-                  Connect Wallet
-                </button>
-              </li>
-            </ul>
-          ):<ul class="flex items-center hidden space-x-8 lg:flex" >
-          <li>
-            <button 
-              class=" inline-flex items-center justify-center  h-12 px-8 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none background hover:border-purple-400 hover:border  "
-              aria-label='Current User'
-              title='Current User'
-            >
-              {currentAccount}
-            </button>
-          </li>
-        </ul> }
+          <div className="flex items-center hidden space-x-8 lg:flex">
+            <ConnectKitButton />
+          </div>
           
           <div class="lg:hidden z-40" > 
             <button 
@@ -103,7 +85,7 @@ const NavBar = () => {
                     </li>
                   ))}
 
-                  {!currentAccount ? (
+                  {/* {!currentAccount ? (
                         <ul class="flex items-center hidden space-x-8 lg:flex" >
                           <li>
                             <button onClick={()=>connectWallet()} 
@@ -132,7 +114,8 @@ const NavBar = () => {
                           {currentAccount}
                         </a>
                       </li>
-                    </ul> }
+                    </ul> } */}
+                    <ConnectKitButton />
                   </ul>
                 </nav>
                 </div>

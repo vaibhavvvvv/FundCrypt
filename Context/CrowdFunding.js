@@ -71,7 +71,40 @@ export const CrowdFundingProvider = ({ children }) => {
 
             await transaction.wait();
 
-            console.log("contract called successfully", transaction )
+            console.log("contract called successfully", transaction);
+            
+            // Send campaign details to AI agent API
+            try {
+                const campaignDetails = `
+                    Title: ${title}
+                    Description: ${description}
+                    Target Amount: ${amount} ETH
+                    Deadline: ${deadline}
+                    Creator: ${currentAccount}
+                `;
+                
+                const response = await fetch('https://fundcrypt.us01.erebrus.io/0664f92c-5fc0-0b4e-85e6-943f158d597b/message', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: `Add New Campaign To Registry: ${campaignDetails}`,
+                        userId: "user1",
+                        userName: "Sha"
+                    }),
+                });
+                
+                if (response.ok) {
+                    console.log("Campaign details sent to AI agent successfully");
+                } else {
+                    console.log("Failed to send campaign details to AI agent");
+                }
+            } catch (apiError) {
+                console.log("Error sending campaign details to AI agent:", apiError);
+                // Don't throw here to prevent blocking the main transaction flow
+            }
+            
         } catch(error){
             console.log("contract call failure", error)
         }

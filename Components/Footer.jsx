@@ -3,7 +3,7 @@ import React from 'react'
 const Footer = () => {
 
   const productList = ["Market", "ERC 20 Token", "Donation"];
-  const contactList = [ " vaibhavng7@gmail.com", "punarvpawade17@gmail.com", "ommore501@gmail.com", "Contact us"]
+  const contactList = [ " vaibhavng7@gmail.com", "Contact us"]
   const usefullLink =[ "Home", "About Us", "Company Info"]
 
   return (
@@ -54,9 +54,9 @@ const Footer = () => {
       </div>
       
       <div class="backgroundMain p-6 text-center " >
-        <span>© 2024 Copyright: </span>
+        <span>© 2025 Copyright: </span>
         <a class="font-semibold" href='https://taialwind-elements.com/' >
-          Vaibhav Gadhave
+          FundCrypt
         </a>
       </div>
     </footer>

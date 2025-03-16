@@ -1,6 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react'
 import { CrowdFundingContext } from '@/Context/CrowdFunding'
 import {Hero, Card, PopUp} from "@/Components"
+import Chatbot from '@/Components/Chatbot'
 
 const index = () => {
   const {
@@ -74,6 +75,8 @@ const index = () => {
           donateFunction={donate}
         />
       )}
+      
+      <Chatbot />
     </>
   );
 };
